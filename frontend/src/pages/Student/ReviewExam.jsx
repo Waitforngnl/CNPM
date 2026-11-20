@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ReviewExam.css';
 import './TakeExam.css';
+import MathRenderer from '../../components/MathRenderer';
 
 function ReviewExam() {
   const { id } = useParams(); // result id
@@ -70,7 +71,7 @@ function ReviewExam() {
             const ans = answers[qIdx] || { selectedOption: -1, correctOption: q.correctOption };
             return (
               <div key={qIdx} className="question-card">
-                <p className="question-text"><strong>Câu {qIdx + 1}:</strong> {q.questionText}</p>
+                <p className="question-text"><strong>Câu {qIdx + 1}:</strong> <MathRenderer text={q.questionText} /></p>
                 <div className="options-list">
                   {q.options.map((opt, oIdx) => {
                     const isSelected = ans.selectedOption === oIdx;
@@ -79,7 +80,7 @@ function ReviewExam() {
                     return (
                       <div key={oIdx} className={className}>
                         <div style={{ fontWeight: 700, marginRight: 12 }}>{String.fromCharCode(65 + oIdx)}.</div>
-                        <div style={{ flex: 1 }}>{opt}</div>
+                        <div style={{ flex: 1 }}><MathRenderer text={opt} /></div>
                         {isSelected && <div style={{ marginLeft: 12, fontWeight: 700 }}>{isCorrect ? 'Đúng' : 'Đáp án của bạn'}</div>}
                         {isCorrect && <div style={{ marginLeft: 12, color: '#065f46', fontWeight: 700 }}>Đáp án đúng</div>}
                       </div>

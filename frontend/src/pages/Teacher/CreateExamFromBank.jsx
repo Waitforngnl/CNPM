@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TeacherNavbar from '../../components/TeacherNavbar';
+import MathRenderer from '../../components/MathRenderer';
 import './CreateExamFromBank.css';
 
 function CreateExamFromBank() {
@@ -408,7 +409,7 @@ function CreateExamFromBank() {
                           <span className="tag grade">{q.grade ? `K${q.grade}` : ''}</span>
                           <span className={`tag ${q.difficulty}`}>{q.difficulty}</span>
                         </div>
-                        <div className="q-text">{q.content}</div>
+                        <div className="q-text"><MathRenderer text={q.content} /></div>
                       </div>
                     </div>
                   ))

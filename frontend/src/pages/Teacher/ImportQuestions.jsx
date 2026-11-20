@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TeacherNavbar from '../../components/TeacherNavbar';
+import MathRenderer from '../../components/MathRenderer';
 import './CreateQuestion.css';
 
 // ĐÃ THÊM DÒNG NÀY: Import trực tiếp thư viện xlsx lên đầu file
@@ -164,12 +165,12 @@ function ImportQuestions() {
                 <div style={{ maxHeight: 320, overflow: 'auto', border: '1px solid #eee', padding: 10 }}>
                   {rows.slice(0, previewCount).map((r, i) => (
                     <div key={i} style={{ padding: 8, borderBottom: '1px solid #f3f3f3' }}>
-                      <div style={{ fontWeight: 700 }}>{i+1}. {r.question}</div>
+                      <div style={{ fontWeight: 700 }}>{i+1}. <MathRenderer text={r.question} /></div>
                       <div style={{ marginTop: 6 }}>
-                        <div>A. {r.a}</div>
-                        <div>B. {r.b}</div>
-                        <div>C. {r.c}</div>
-                        <div>D. {r.d}</div>
+                        <div>A. <MathRenderer text={r.a} /></div>
+                        <div>B. <MathRenderer text={r.b} /></div>
+                        <div>C. <MathRenderer text={r.c} /></div>
+                        <div>D. <MathRenderer text={r.d} /></div>
                         <div style={{ marginTop: 6, color: '#555' }}>Đáp án: {r.answer}</div>
                       </div>
                     </div>

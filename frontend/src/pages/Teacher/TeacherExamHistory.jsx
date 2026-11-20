@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as XLSX from 'xlsx'; // Import thư viện Excel
+import renderMathInElement from 'katex/contrib/auto-render';
+import { formatMathText } from '../../components/MathRenderer';
 import TeacherNavbar from '../../components/TeacherNavbar';
 import './TeacherExamHistory.css';
 
@@ -112,14 +114,19 @@ function TeacherExamHistory() {
       
       let questionsHtml = '';
       exam.questions.forEach((q, index) => {
+        const qText = formatMathText(q.questionText);
+        const optA = formatMathText(q.options?.[0] ?? '');
+        const optB = formatMathText(q.options?.[1] ?? '');
+        const optC = formatMathText(q.options?.[2] ?? '');
+        const optD = formatMathText(q.options?.[3] ?? '');
         questionsHtml += `
           <div class="question-block">
-            <p class="question-text"><strong>Câu ${index + 1}:</strong> ${q.questionText}</p>
+            <p class="question-text"><strong>Câu ${index + 1}:</strong> ${qText}</p>
             <div class="options-grid">
-              <div>A. ${q.options[0]}</div>
-              <div>B. ${q.options[1]}</div>
-              <div>C. ${q.options[2]}</div>
-              <div>D. ${q.options[3]}</div>
+              <div>A. ${optA}</div>
+              <div>B. ${optB}</div>
+              <div>C. ${optC}</div>
+              <div>D. ${optD}</div>
             </div>
           </div>
         `;
@@ -129,6 +136,9 @@ function TeacherExamHistory() {
         <html>
           <head>
             <title>Đề thi: ${exam.title}</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+            <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+            <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
             <style>
               body { font-family: 'Times New Roman', Times, serif; padding: 30px; line-height: 1.6; color: #000; font-size: 14px; }
               .header-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
@@ -174,15 +184,48 @@ function TeacherExamHistory() {
             </div>
 
             <script>
-              window.onload = function() {
-                window.print();
-                setTimeout(function() { window.close(); }, 500);
-              };
+              function triggerPrint() {
+                if (window.renderMathInElement) {
+                  window.renderMathInElement(document.body, {
+                    delimiters: [
+                      { left: '$$', right: '$$', display: true },
+                      { left: '$', right: '$', display: false },
+                      { left: '\\\\(', right: '\\\\)', display: false },
+                      { left: '\\\\[', right: '\\\\]', display: true }
+                    ],
+                    throwOnError: false
+                  });
+                }
+                setTimeout(function() {
+                  window.print();
+                  setTimeout(function() { window.close(); }, 500);
+                }, 400);
+              }
+              if (document.readyState === 'complete') {
+                triggerPrint();
+              } else {
+                window.addEventListener('load', triggerPrint);
+              }
             </script>
           </body>
         </html>
       `);
       printWindow.document.close();
+
+      // Render KaTeX trực tiếp ngay trong DOM của cửa sổ in
+      try {
+        renderMathInElement(printWindow.document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '\\[', right: '\\]', display: true }
+          ],
+          throwOnError: false
+        });
+      } catch (e) {
+        console.warn('Lỗi render KaTeX khi in:', e);
+      }
     } catch (err) {
       alert("Có lỗi xảy ra: " + err.message);
     }

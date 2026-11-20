@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './TakeExam.css';
 import 'katex/dist/katex.min.css';
-import Latex from 'react-latex-next';
+import MathRenderer from '../../components/MathRenderer';
 
 const shuffleArray = (array) => {
   const arr = [...array];
@@ -220,7 +220,7 @@ function TakeExam() {
             <div key={displayIdx} className="question-card">
               <div style={{ fontSize: '16px', marginBottom: '15px' }}>
                 <strong>Câu {displayIdx + 1}: </strong> 
-                <Latex>{q.questionText}</Latex>
+                <MathRenderer text={q.questionText} />
               </div>
               
               <div className="options-list">
@@ -233,7 +233,7 @@ function TakeExam() {
                       checked={answers[q.originalQIdx] === opt.originalOIdx} 
                     />
                     <span style={{ marginLeft: '10px' }}>
-                      {String.fromCharCode(65 + oDisplayIdx)}. <Latex>{opt.text}</Latex>
+                      {String.fromCharCode(65 + oDisplayIdx)}. <MathRenderer text={opt.text} />
                     </span>
                   </label>
                 ))}

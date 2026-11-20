@@ -10,10 +10,8 @@ const ExamSchema = new mongoose.Schema({
   classId: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Class' 
-    // Lưu ý: Tạm thời không để required: true để các bài thi cũ bạn đã tạo trước đây không bị báo lỗi.
   },
 
-  // TÍNH NĂNG MỚI: Giới hạn số lần thi (bạn đã yêu cầu ở phần trước)
   maxAttempts: { 
     type: Number, 
     default: 1 

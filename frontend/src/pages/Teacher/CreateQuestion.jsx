@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TeacherNavbar from '../../components/TeacherNavbar';
+import MathRenderer from '../../components/MathRenderer';
 import './CreateQuestion.css';
 
 function CreateQuestion() {
@@ -132,6 +133,12 @@ function CreateQuestion() {
                 value={formData.content}
                 onChange={handleChange}
               ></textarea>
+              {formData.content && (
+                <div style={{ marginTop: '8px', padding: '8px 12px', background: '#f8fafc', borderRadius: '6px', fontSize: '14px', border: '1px solid #e2e8f0' }}>
+                  <span style={{ color: '#64748b', fontWeight: 'bold' }}>Xem trước LaTeX: </span>
+                  <MathRenderer text={formData.content} />
+                </div>
+              )}
             </div>
 
             <div className="options-grid">
